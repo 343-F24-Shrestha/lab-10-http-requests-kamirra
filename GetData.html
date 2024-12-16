@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Show me the Data</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            margin: 20px;
+        }
+        button {
+            margin: 10px 0;
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+        .output {
+            margin-top: 10px;
+            border: 1px solid #ccc;
+            padding: 10px;
+            background-color: #f9f9f9;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Harry Potter Spell Generators</h1>
+        <div>
+            <h3> Spell 1</h3>
+            <button type="button" onclick="fetchData('output1')">Generate a spell</button>
+            <div id="output1" class="output">No data fetched yet.</div>
+        </div>
+        <div>
+            <h3>Spell 2</h3>
+            <button type="button" onclick="fetchData('output2')">Generate a spell</button>
+            <div id="output2" class="output">No data fetched yet.</div>
+        </div>
+        <div>
+            <h3>Spell 2</h3>
+            <button type="button" onclick="fetchData('output3')">Generate a spell</button>
+            <div id="output3" class="output">No data fetched yet.</div>
+        </div>
+    </div>
+
+    <script>
+
+        async function fetchData(outputId) {
+            try {
+                const response = await fetch("https://wizard-world-api.herokuapp.com/Spells");
+                if (!response.ok) {
+                    throw new Error("Failed to fetch data.");
+                }
+                const data = await response.json();
+                const outputDiv = document.getElementById(outputId);
+                outputDiv.textContent = "";
+                const r = Math.floor(Math.random() * 100);
+                const paragraph = document.createElement("p");
+                const string = "Name: " + data[r]?.name + "; Incantation: " + data[r]?.incantation;
+                paragraph.textContent = string
+                
+                outputDiv.appendChild(paragraph);
+            } catch (error) {
+                console.error("Error fetching data:", error);
+                
+            }
+        }
+           
+    </script>
+</body>
+</html>
